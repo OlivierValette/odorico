@@ -105,11 +105,11 @@ initDatabase();
 /* GET spots API */
 router.get('/', function (req, res, next) {
     // get document in odorico
-    app.locals.db.collection('odorico').findAll( (err, spot) => {
+    app.locals.db.collection('spot').find( (err, spots) => {
         if (err) console.log(err);
-        if (!spot) next();
-        res.json(spot);
-    });
+        if (!spots) next();
+        res.json(spots);
+    }).sort( { title: 1 } );
 });
 
 // Get multer and define uploads directory
