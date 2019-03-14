@@ -11,4 +11,13 @@ router.post('/', upload.single('picture'), function(req, res, next) {
     res.sendStatus(200);
 });
 
+/* GET spots API */
+router.get('/', function (req, res) {
+    const data = [
+        {title: '35 av. Janvier', description: 'près de la gare'},
+        {title: 'rue de Fougère', description: 'au dessus du porche'},
+    ];
+    res.json(data);
+});
+
 module.exports = router;
