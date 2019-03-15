@@ -5,7 +5,7 @@ const Spot = require('../model/OdoricoSpot');
 /* GET spots API */
 router.get('/', function (req, res, next) {
     // get spots in odorico
-    app.locals.db.collection('spot').find( (err, spots) => {
+    Spot.find( (err, spots) => {
         if (err) console.log(err);
         res.json(spots);
     }).sort( { title: 1 } );
@@ -13,7 +13,15 @@ router.get('/', function (req, res, next) {
 
 // Get multer and define uploads directory
 const multer = require('multer');
-const upload = multer({dest: 'uploads/'});
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' + file.originalname);
+    },
+});
+const upload = multer({ storage: storage });
 
 /* POST Odorico API */
 router.post('/', upload.single('image'), function(req, res, next) {
@@ -22,7 +30,7 @@ router.post('/', upload.single('image'), function(req, res, next) {
         title: req.body.title,
         address: req.body.address,
         description: req.body.description,
-        image: null,
+        image: req.file.filename,
         location: {
             type: 'Point',
             coordinates: [req.body.lat, req.body.lng],
