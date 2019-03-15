@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 var odoricoRouter = require('./routes/odorico');
 
 const mongoose = require('mongoose');
+const Spot = require('./model/OdoricoSpot');
 
 var app = express();
 
@@ -30,21 +31,27 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 /*
 // database initialization
-db.once('open', function() {
-  // we're connected!
+db.once('open', () => {
+
 });
 
-// database initialization
-function sleep(ms){
-  return new Promise(resolve=>{
-    setTimeout(resolve,ms)
-  })
-}
-async function initDatabase(){
-  await sleep(3000);
   app.locals.db.collection('spot').drop();
   await sleep(1000);
   app.locals.db.collection('spot').insertMany( [
+
+      const spot = new Spot({
+        title: req.body.title,
+        description: req.body.description,
+        image: null,
+        location: {
+            type: 'Point',
+            coordinates: [req.body.lat, req.body.lng],
+        }
+    });
+    spot.save( (err, newspot) => {
+        if (err) next(err);
+        res.json(newspot)
+    });
     {
       title: "Immeuble Poirier",
       address: "7 avenue Janvier",

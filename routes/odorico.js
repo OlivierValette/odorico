@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Spot = require('../model/Odorico');
+const Spot = require('../model/OdoricoSpot');
 
 /* GET spots API */
 router.get('/', function (req, res, next) {
@@ -20,6 +20,7 @@ router.post('/', upload.single('image'), function(req, res, next) {
     console.log(req.file);
     const spot = new Spot({
         title: req.body.title,
+        address: req.body.address,
         description: req.body.description,
         image: null,
         location: {
