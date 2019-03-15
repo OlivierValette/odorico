@@ -16,7 +16,7 @@ const UserSchema = new Schema({
 
 // password coding hook
 UserSchema.pre('save', function(next) {
-    bcrypt.hash(this.password, 10, hash => {
+    bcrypt.hash(this.password, 10, (err, hash) => {
         this.password = hash;
         next();
     });
